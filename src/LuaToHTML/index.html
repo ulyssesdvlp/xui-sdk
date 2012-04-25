@@ -1,0 +1,65 @@
+<html>
+<head> 
+
+	<meta http-equiv = "content-type" content = "text/html; charset=utf-8" /> 
+	<meta http-equiv = "content-language" content = "en" /> 
+	<meta name="viewport" content="target-densitydpi=device-dpi,height=device-height, 
+		width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<title>Test</title> 
+	<script type="text/javascript">
+
+		var urlVars = {}
+
+		function getArgs(){
+			try {
+				var xobj = new XMLHttpRequest();
+				xobj.overrideMimeType("application/json");
+				xobj.open('GET', "args.json", false);
+				xobj.send(null);
+				return eval("(" + xobj.responseText + ")");
+			}
+			catch(err){}
+			return null;
+		}
+
+		function getVariable( name, defaultValue ){
+			try {
+				if (urlVars[name] == null) return defaultValue;
+				return urlVars[name];
+			}
+			catch(err){}
+			return defaultValue;
+		}
+
+		function update( ){
+				urlVars = getArgs();
+				var arg = getVariable( 'arg', 1 );
+				document.getElementById("method").style.display = 'block';
+				document.getElementById('method').innerHTML = "Corona p-value: " + arg;
+				return true
+		}
+				
+		function send( params ){
+				alert("Sending stuff to lua");
+				var xobj = new XMLHttpRequest();
+				xobj.open('GET', "http://127.0.0.1:8087?" + params, true);
+				xobj.onreadystatechange = update( );
+				xobj.send(null);
+				return true
+		}
+
+		try{
+			window.onload = function () {
+				update();
+			};
+		} 
+		catch(err){
+		}
+	</script>
+</head>
+<body> 
+	<h1>Hello World</h1>
+	<h2 id="method" style="display:none;"></h2> 
+	<button onclick="send('arg=1&shouldLoad=true&')">send values to lua</button>
+	<button onclick="send('arg=1&shouldLoad=false&')">close</button>
+</body>
