@@ -1,0 +1,13 @@
+settings = 
+{
+	orientation =
+	{
+		default ="landscapeRight",
+		content ="landscapeRight",
+
+		supported =
+		{
+		        "landscapeRight"
+		},
+	},
+}
